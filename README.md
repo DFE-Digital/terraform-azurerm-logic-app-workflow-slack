@@ -60,5 +60,5 @@ module "<MODULE NAME>" {
 
 | Name | Description |
 |------|-------------|
-| <a name="output_logic_app_webhook_endpoint"></a> [logic\_app\_webhook\_endpoint](#output\_logic\_app\_webhook\_endpoint) | n/a |
+| <a name="output_logic_app_receiver"></a> [logic\_app\_receiver](#output\_logic\_app\_receiver) | Logic App Reciever block, suitable for plugging in to an azurerm\_monitor\_action\_group |
 <!-- END_TF_DOCS -->
