@@ -10,10 +10,25 @@ This module creates and manages an Azure Logic App Workflow.
 Example module usage:
 
 ```hcl
-module "<MODULE NAME>" {
-  source  = "github.com/<ORG>/<MODULE NAME>?ref=v<VERSION>"
+module "azurerm_logic_app_workflow" {
+  source              = "github.com/DFE-Digital/terraform-azurerm-logic-app-workflow-slack"
+  environment         = "my-env"
+  project_name        = "my-proj"
+  azure_location      = "uksouth"
+  resource_group_bins = {
+    "my-resource-group" = {
+      slack_webhook_url = "https://hooks.slack.com/services/XXX/YYY/ZZZZZZ"
+      channel_id        = "ABCABCABC"
+    },
+    "my-other-resource-group" = {
+      slack_webhook_url = "https://hooks.slack.com/services/XXX/YYY/ZZZZZZ"
+      channel_id        = "ABCABCABC"
+    }
+  }
 
-  environment = "dev/staging/test/pre-prod/prod/post-prod"
+  tags = {
+    "Key" = "Value"
+  }
 }
 ```
 
