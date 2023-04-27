@@ -36,6 +36,8 @@ module "<MODULE NAME>" {
 | Name | Type |
 |------|------|
 | [azurerm_log_analytics_workspace.default](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) | resource |
+| [azurerm_logic_app_action_custom.switch](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/logic_app_action_custom) | resource |
+| [azurerm_logic_app_action_custom.vars](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/logic_app_action_custom) | resource |
 | [azurerm_logic_app_trigger_http_request.default](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/logic_app_trigger_http_request) | resource |
 | [azurerm_logic_app_workflow.default](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/logic_app_workflow) | resource |
 | [azurerm_management_lock.default](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_lock) | resource |
@@ -54,6 +56,7 @@ module "<MODULE NAME>" {
 | <a name="input_existing_log_analytics_workspace"></a> [existing\_log\_analytics\_workspace](#input\_existing\_log\_analytics\_workspace) | Conditionally send Diagnostics into an existing Log Analytics Workspace. Specifying this will NOT create a new resource | `string` | `""` | no |
 | <a name="input_existing_resource_group"></a> [existing\_resource\_group](#input\_existing\_resource\_group) | Conditionally launch resources into an existing resource group. Specifying this will NOT create a resource group. | `string` | `""` | no |
 | <a name="input_project_name"></a> [project\_name](#input\_project\_name) | Project name. Will be used along with `environment` as a prefix for all resources. | `string` | n/a | yes |
+| <a name="input_resource_group_bins"></a> [resource\_group\_bins](#input\_resource\_group\_bins) | Slack webhook destinations keyed by the Resource Group you want to collect webhooks from | <pre>map(<br>    object({<br>      slack_webhook_url = string<br>      channel_id        = string<br>    })<br>  )</pre> | `{}` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags to be applied to all resources | `map(string)` | `{}` | no |
 
 ## Outputs
@@ -61,4 +64,6 @@ module "<MODULE NAME>" {
 | Name | Description |
 |------|-------------|
 | <a name="output_logic_app_receiver"></a> [logic\_app\_receiver](#output\_logic\_app\_receiver) | Logic App Reciever block, suitable for plugging in to an azurerm\_monitor\_action\_group |
+| <a name="output_workflow_cases"></a> [workflow\_cases](#output\_workflow\_cases) | JSON object containing all the different switch cases used for conditionally routing alerts |
+| <a name="output_workflow_code_view"></a> [workflow\_code\_view](#output\_workflow\_code\_view) | JSON output that can be rendered in the Logic App Workflow designer view |
 <!-- END_TF_DOCS -->

@@ -10,4 +10,24 @@ locals {
   existing_log_analytics_workspace = var.existing_log_analytics_workspace
   log_analytics_workspace          = local.existing_resource_group == "" ? azurerm_log_analytics_workspace.default[0] : data.azurerm_log_analytics_workspace.existing_log_analytics_workspace[0]
   log_analytics_workspace_id       = local.log_analytics_workspace.id
+
+  workflow_cases = { for resource_group_name, case in var.resource_group_bins :
+    resource_group_name => {
+      body : templatefile(
+        "${path.module}/webhook/slack.json",
+        {
+          channel = case.channel_id
+        }
+      )
+      uri : case.slack_webhook_url
+    }
+  }
+
+  workflow_switch = templatefile(
+    "${path.module}/webhook/switch.tftpl",
+    {
+      run_after = azurerm_logic_app_action_custom.vars.name
+      cases     = local.workflow_cases
+    }
+  )
 }

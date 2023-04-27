@@ -12,27 +12,31 @@ resource "azurerm_logic_app_trigger_http_request" "default" {
   schema       = templatefile("${path.module}/schema/common-alert-schema.json", {})
 }
 
-resource "azurerm_monitor_diagnostic_setting" "default" {
-  name                           = "${local.resource_prefix}-diag"
-  target_resource_id             = azurerm_logic_app_workflow.default.id
-  log_analytics_workspace_id     = local.log_analytics_workspace_id
-  log_analytics_destination_type = "Dedicated"
+resource "azurerm_logic_app_action_custom" "vars" {
+  name         = "${local.resource_prefix}-setvar"
+  logic_app_id = azurerm_logic_app_workflow.default.id
 
-  enabled_log {
-    category = "WorkflowRuntime"
-
-    retention_policy {
-      enabled = true
-      days    = 7
-    }
+  body = <<BODY
+  {
+    "description": "Set a variable that holds the Resource Group name",
+    "inputs": {
+      "variables": [
+        {
+          "name": "affectedResourceGroup",
+          "type": "string",
+          "value": "@{split(triggerBody()?['data']?['essentials']?['alertTargetIDs'][0], '/')[4]}"
+        }
+      ]
+    },
+    "runAfter": {},
+    "type": "InitializeVariable"
   }
+  BODY
+}
 
-  metric {
-    category = "AllMetrics"
+resource "azurerm_logic_app_action_custom" "switch" {
+  name         = "${local.resource_prefix}-switch"
+  logic_app_id = azurerm_logic_app_workflow.default.id
 
-    retention_policy {
-      enabled = true
-      days    = 7
-    }
-  }
+  body = local.workflow_switch
 }

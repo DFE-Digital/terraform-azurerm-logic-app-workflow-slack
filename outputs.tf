@@ -7,3 +7,13 @@ output "logic_app_receiver" {
     callback_url            = azurerm_logic_app_trigger_http_request.default.callback_url
   }
 }
+
+output "workflow_cases" {
+  description = "JSON object containing all the different switch cases used for conditionally routing alerts"
+  value       = local.workflow_cases
+}
+
+output "workflow_code_view" {
+  description = "JSON output that can be rendered in the Logic App Workflow designer view"
+  value       = local.workflow_switch
+}
