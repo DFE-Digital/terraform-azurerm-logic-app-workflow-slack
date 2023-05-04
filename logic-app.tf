@@ -13,22 +13,18 @@ resource "azurerm_logic_app_trigger_http_request" "default" {
 }
 
 resource "azurerm_logic_app_action_custom" "var_affected_resource" {
-  count = local.enable_monitoring ? 1 : 0
-
   name         = "${local.resource_prefix}-setvars0"
-  logic_app_id = azurerm_logic_app_workflow.webhook[0].id
+  logic_app_id = azurerm_logic_app_workflow.default.id
 
   body = templatefile("${path.module}/templates/variables/affected-resource.json.tpl", {})
 }
 
 resource "azurerm_logic_app_action_custom" "var_alarm_context" {
-  count = local.enable_monitoring ? 1 : 0
-
   name         = "${local.resource_prefix}-setvars1"
-  logic_app_id = azurerm_logic_app_workflow.webhook[0].id
+  logic_app_id = azurerm_logic_app_workflow.default.id
 
   body = templatefile("${path.module}/templates/variables/alarm-context.json.tpl", {
-    run_after = azurerm_logic_app_action_custom.var_affected_resource[0].name
+    run_after = azurerm_logic_app_action_custom.var_affected_resource.name
   })
 }
 
