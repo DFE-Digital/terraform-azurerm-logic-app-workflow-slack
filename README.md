@@ -83,7 +83,6 @@ module "azurerm_logic_app_workflow" {
 
 | Name | Description |
 |------|-------------|
-| <a name="output_logic_app_receiver"></a> [logic\_app\_receiver](#output\_logic\_app\_receiver) | Logic App Reciever block, suitable for plugging in to an azurerm\_monitor\_action\_group |
-| <a name="output_workflow_cases"></a> [workflow\_cases](#output\_workflow\_cases) | JSON object containing all the different switch cases used for conditionally routing alerts |
-| <a name="output_workflow_code_view"></a> [workflow\_code\_view](#output\_workflow\_code\_view) | JSON output that can be rendered in the Logic App Workflow designer view |
+| <a name="output_logic_app_workflow"></a> [logic\_app\_workflow](#output\_logic\_app\_workflow) | Logic App Workflow |
+| <a name="output_logic_app_workflow_trigger"></a> [logic\_app\_workflow\_trigger](#output\_logic\_app\_workflow\_trigger) | Logic App Workflow Trigger |
 <!-- END_TF_DOCS -->
