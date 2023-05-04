@@ -5,6 +5,6 @@ resource "azurerm_log_analytics_workspace" "default" {
   resource_group_name = local.resource_group.name
   location            = local.resource_group.location
   sku                 = "PerGB2018"
-  retention_in_days   = 30
+  retention_in_days   = local.log_analytics_retention_period_days
   tags                = local.tags
 }

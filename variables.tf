@@ -55,6 +55,12 @@ variable "existing_log_analytics_workspace" {
   default     = ""
 }
 
+variable "log_analytics_retention_period_days" {
+  description = "Retention period for logs in the Log Analyitcs Workspace. Has no effect if you are using an existing workspace"
+  type        = number
+  default     = 30
+}
+
 variable "resource_group_bins" {
   description = "Slack webhook destinations keyed by the Resource Group you want to collect webhooks from"
   type = map(
