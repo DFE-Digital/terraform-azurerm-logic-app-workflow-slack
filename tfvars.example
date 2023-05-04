@@ -1,1 +1,17 @@
-environment = "dev"
+environment         = "my-env"
+project_name        = "my-proj"
+azure_location      = "uksouth"
+resource_group_bins = {
+  "my-resource-group" = {
+    slack_webhook_url = "https://hooks.slack.com/services/XXX/YYY/ZZZZZZ"
+    channel_id        = "ABCABCABC"
+  },
+  "my-other-resource-group" = {
+    slack_webhook_url = "https://hooks.slack.com/services/XXX/YYY/ZZZZZZ"
+    channel_id        = "ABCABCABC"
+  }
+}
+
+tags = {
+  "Key" = "Value"
+}
