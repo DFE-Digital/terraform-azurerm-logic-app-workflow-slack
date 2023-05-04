@@ -21,7 +21,7 @@ locals {
   workflow_cases = { for resource_group_name, case in var.resource_group_bins :
     resource_group_name => {
       body : templatefile(
-        "${path.module}/webhook/slack.json",
+        "${path.module}/templates/slack-webhook.json.tpl",
         {
           channel = case.channel_id
         }
@@ -31,7 +31,7 @@ locals {
   }
 
   workflow_switch = templatefile(
-    "${path.module}/webhook/switch.tftpl",
+    "${path.module}/templates/actions/switch.json.tpl",
     {
       run_after = azurerm_logic_app_action_custom.vars.name
       cases     = local.workflow_cases
