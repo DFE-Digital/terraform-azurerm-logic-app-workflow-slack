@@ -66,6 +66,9 @@ module "azurerm_logic_app_workflow" {
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_azure_location"></a> [azure\_location](#input\_azure\_location) | Azure location in which to launch resources. | `string` | n/a | yes |
+| <a name="input_diagnostic_setting_retention_period_days"></a> [diagnostic\_setting\_retention\_period\_days](#input\_diagnostic\_setting\_retention\_period\_days) | Retention period for diagnostic logs in days | `number` | `7` | no |
+| <a name="input_enable_diagnostic_setting"></a> [enable\_diagnostic\_setting](#input\_enable\_diagnostic\_setting) | Enable Diagnostics for the Logic App Workflow and send data to Log Analytics | `bool` | `true` | no |
+| <a name="input_enable_diagnostic_setting_retention"></a> [enable\_diagnostic\_setting\_retention](#input\_enable\_diagnostic\_setting\_retention) | Specify a retention period for Diagnostics. Has no effect if 'enable\_diagnostic\_setting' is false | `bool` | `true` | no |
 | <a name="input_enable_resource_group_lock"></a> [enable\_resource\_group\_lock](#input\_enable\_resource\_group\_lock) | Enabling this will add a Resource Lock to the Resource Group preventing any resources from being deleted. | `bool` | `false` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment name. Will be used along with `project_name` as a prefix for all resources. | `string` | n/a | yes |
 | <a name="input_existing_log_analytics_workspace"></a> [existing\_log\_analytics\_workspace](#input\_existing\_log\_analytics\_workspace) | Conditionally send Diagnostics into an existing Log Analytics Workspace. Specifying this will NOT create a new resource | `string` | `""` | no |

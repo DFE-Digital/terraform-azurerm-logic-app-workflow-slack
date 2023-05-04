@@ -19,6 +19,24 @@ variable "tags" {
   default     = {}
 }
 
+variable "enable_diagnostic_setting" {
+  description = "Enable Diagnostics for the Logic App Workflow and send data to Log Analytics"
+  type        = bool
+  default     = true
+}
+
+variable "enable_diagnostic_setting_retention" {
+  description = "Specify a retention period for Diagnostics. Has no effect if 'enable_diagnostic_setting' is false"
+  type        = bool
+  default     = true
+}
+
+variable "diagnostic_setting_retention_period_days" {
+  description = "Retention period for diagnostic logs in days"
+  type        = number
+  default     = 7
+}
+
 variable "existing_resource_group" {
   description = "Conditionally launch resources into an existing resource group. Specifying this will NOT create a resource group."
   type        = string

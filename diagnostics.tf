@@ -1,4 +1,6 @@
 resource "azurerm_monitor_diagnostic_setting" "default" {
+  count = local.enable_diagnostic_setting ? 1 : 0
+
   name                           = "${local.resource_prefix}-diag"
   target_resource_id             = azurerm_logic_app_workflow.default.id
   log_analytics_workspace_id     = local.log_analytics_workspace_id
@@ -8,8 +10,8 @@ resource "azurerm_monitor_diagnostic_setting" "default" {
     category = "WorkflowRuntime"
 
     retention_policy {
-      enabled = true
-      days    = 7
+      enabled = local.enable_diagnostic_setting_retention
+      days    = local.diagnostic_setting_retention_period_days
     }
   }
 
@@ -17,8 +19,8 @@ resource "azurerm_monitor_diagnostic_setting" "default" {
     category = "AllMetrics"
 
     retention_policy {
-      enabled = true
-      days    = 7
+      enabled = local.enable_diagnostic_setting_retention
+      days    = local.diagnostic_setting_retention_period_days
     }
   }
 }
