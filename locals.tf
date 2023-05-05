@@ -18,7 +18,7 @@ locals {
   log_analytics_workspace_id          = local.log_analytics_workspace.id
   log_analytics_retention_period_days = var.log_analytics_retention_period_days
 
-  workflow_cases = { for resource_group_name, case in var.resource_group_bins :
+  workflow_cases = { for resource_group_name, case in var.resource_group_target_webhooks :
     resource_group_name => {
       body : templatefile(
         "${path.module}/templates/slack-webhook.json.tpl",
@@ -26,7 +26,7 @@ locals {
           channel = case.channel_id
         }
       )
-      uri : case.slack_webhook_url
+      uri : case.webhook_url
     }
   }
 

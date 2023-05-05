@@ -61,12 +61,12 @@ variable "log_analytics_retention_period_days" {
   default     = 30
 }
 
-variable "resource_group_bins" {
+variable "resource_group_target_webhooks" {
   description = "Slack webhook destinations keyed by the Resource Group you want to collect webhooks from"
   type = map(
     object({
-      slack_webhook_url = string
-      channel_id        = string
+      webhook_url = string
+      channel_id  = string
     })
   )
   default   = {}

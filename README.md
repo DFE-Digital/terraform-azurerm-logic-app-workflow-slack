@@ -15,13 +15,13 @@ module "azurerm_logic_app_workflow" {
   environment         = "my-env"
   project_name        = "my-proj"
   azure_location      = "uksouth"
-  resource_group_bins = {
+  resource_group_target_webhooks = {
     "my-resource-group" = {
-      slack_webhook_url = "https://hooks.slack.com/services/XXX/YYY/ZZZZZZ"
+      webhook_url = "https://hooks.slack.com/services/XXX/YYY/ZZZZZZ"
       channel_id        = "ABCABCABC"
     },
     "my-other-resource-group" = {
-      slack_webhook_url = "https://hooks.slack.com/services/XXX/YYY/ZZZZZZ"
+      webhook_url = "https://hooks.slack.com/services/XXX/YYY/ZZZZZZ"
       channel_id        = "ABCABCABC"
     }
   }
@@ -76,7 +76,7 @@ module "azurerm_logic_app_workflow" {
 | <a name="input_existing_resource_group"></a> [existing\_resource\_group](#input\_existing\_resource\_group) | Conditionally launch resources into an existing resource group. Specifying this will NOT create a resource group. | `string` | `""` | no |
 | <a name="input_log_analytics_retention_period_days"></a> [log\_analytics\_retention\_period\_days](#input\_log\_analytics\_retention\_period\_days) | Retention period for logs in the Log Analyitcs Workspace. Has no effect if you are using an existing workspace | `number` | `30` | no |
 | <a name="input_project_name"></a> [project\_name](#input\_project\_name) | Project name. Will be used along with `environment` as a prefix for all resources. | `string` | n/a | yes |
-| <a name="input_resource_group_bins"></a> [resource\_group\_bins](#input\_resource\_group\_bins) | Slack webhook destinations keyed by the Resource Group you want to collect webhooks from | <pre>map(<br>    object({<br>      slack_webhook_url = string<br>      channel_id        = string<br>    })<br>  )</pre> | `{}` | no |
+| <a name="input_resource_group_target_webhooks"></a> [resource\_group\_target\_webhooks](#input\_resource\_group\_target\_webhooks) | Slack webhook destinations keyed by the Resource Group you want to collect webhooks from | <pre>map(<br>    object({<br>      webhook_url = string<br>      channel_id  = string<br>    })<br>  )</pre> | `{}` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags to be applied to all resources | `map(string)` | `{}` | no |
 
 ## Outputs
