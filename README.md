@@ -1,7 +1,7 @@
 # terraform-azurerm-logic-app-workflow-slack
 
-[![Terraform CI](./actions/workflows/continuous-integration-terraform.yml/badge.svg?branch=main)](./actions/workflows/continuous-integration-terraform.yml?branch=main)
-[![GitHub release](./releases)](./releases)
+[![Terraform CI](https://github.com/DFE-Digital/terraform-azurerm-logic-app-workflow-slack/actions/workflows/continuous-integration-terraform.yml/badge.svg?branch=main)](https://github.com/DFE-Digital/terraform-azurerm-logic-app-workflow-slack/actions/workflows/continuous-integration-terraform.yml?branch=main)
+[![GitHub release](https://github.com/DFE-Digital/terraform-azurerm-logic-app-workflow-slack/releases)](https://github.com/DFE-Digital/terraform-azurerm-logic-app-workflow-slack/releases)
 
 This module creates and manages an Azure Logic App Workflow.
 
@@ -18,11 +18,11 @@ module "azurerm_logic_app_workflow" {
   resource_group_target_webhooks = {
     "my-resource-group" = {
       webhook_url = "https://hooks.slack.com/services/XXX/YYY/ZZZZZZ"
-      channel_id        = "ABCABCABC"
+      channel_id  = "ABCABCABC"
     },
     "my-other-resource-group" = {
       webhook_url = "https://hooks.slack.com/services/XXX/YYY/ZZZZZZ"
-      channel_id        = "ABCABCABC"
+      channel_id  = "ABCABCABC"
     }
   }
 
