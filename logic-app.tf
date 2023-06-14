@@ -33,4 +33,6 @@ resource "azurerm_logic_app_action_custom" "switch" {
   logic_app_id = azurerm_logic_app_workflow.default.id
 
   body = local.workflow_switch
+
+  depends_on = [azurerm_logic_app_action_custom.var_affected_resource, azurerm_logic_app_action_custom.var_alarm_context]
 }
