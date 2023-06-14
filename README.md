@@ -83,6 +83,8 @@ module "azurerm_logic_app_workflow" {
 
 | Name | Description |
 |------|-------------|
+| <a name="output_azurerm_log_analytics_workspace"></a> [azurerm\_log\_analytics\_workspace](#output\_azurerm\_log\_analytics\_workspace) | Log Analytics Workspace linked to the Logic App Workflow |
 | <a name="output_logic_app_workflow"></a> [logic\_app\_workflow](#output\_logic\_app\_workflow) | Logic App Workflow |
 | <a name="output_logic_app_workflow_trigger"></a> [logic\_app\_workflow\_trigger](#output\_logic\_app\_workflow\_trigger) | Logic App Workflow Trigger |
+| <a name="output_resource_group"></a> [resource\_group](#output\_resource\_group) | The Resource Group the Logic App was deployed to |
 <!-- END_TF_DOCS -->
