@@ -44,7 +44,7 @@
       }
     }
   },
-  "expression": "@variables('${var_name}')",
+  "expression": "${var_name}",
   "runAfter": {
     "${run_after}": [
       "Succeeded"

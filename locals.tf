@@ -33,7 +33,7 @@ locals {
   workflow_switch = templatefile(
     "${path.module}/templates/actions/switch.json.tpl",
     {
-      var_name  = "affectedResource"
+      var_name  = "@variables('affectedResource')[4]" # Resource Group
       run_after = azurerm_logic_app_action_custom.var_alarm_context.name
       cases     = local.workflow_cases
     }
