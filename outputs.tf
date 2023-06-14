@@ -1,6 +1,6 @@
 output "logic_app_workflow" {
   description = "Logic App Workflow"
-  value       = azurerm_logic_app_workflow.default.name
+  value       = azurerm_logic_app_workflow.default
 }
 
 output "logic_app_workflow_trigger" {
