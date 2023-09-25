@@ -2,11 +2,11 @@
   "description": "Conditionally run a subsequent action based on the Resource Group name",
   "cases": {
     %{ for resource_group_name, case in cases ~}
-      "${resource_group_name}": {
+      "${resource_group_name}-case": {
         "actions": {
-          "isMetricAlert": {
+          "${resource_group_name}-isMetricAlert-condition": {
             "actions": {
-              "${resource_group_name}": {
+              "${resource_group_name}-metric": {
                 "inputs": {
                   "body" : ${case.metric_alert},
                   "headers": {
@@ -21,7 +21,7 @@
             },
             "else": {
               "actions": {
-                "${resource_group_name}": {
+                "${resource_group_name}-log": {
                   "inputs": {
                     "body" : ${case.log_alert},
                     "headers": {
