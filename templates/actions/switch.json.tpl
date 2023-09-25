@@ -4,17 +4,49 @@
     %{ for resource_group_name, case in cases ~}
       "${resource_group_name}": {
         "actions": {
-          "${resource_group_name}": {
-            "inputs": {
-              "body" : ${case.body},
-              "headers": {
-                "Content-Type": "application/json"
-              },
-              "method": "POST",
-              "uri": "${case.uri}"
+          "isMetricAlert": {
+            "actions": {
+              "${resource_group_name}": {
+                "inputs": {
+                  "body" : ${case.metric_alert},
+                  "headers": {
+                    "Content-Type": "application/json"
+                  },
+                  "method": "POST",
+                  "uri": "${case.uri}"
+                },
+                "runAfter": {},
+                "type": "Http"
+              }
+            },
+            "else": {
+              "actions": {
+                "${resource_group_name}": {
+                  "inputs": {
+                    "body" : ${case.log_alert},
+                    "headers": {
+                      "Content-Type": "application/json"
+                    },
+                    "method": "POST",
+                    "uri": "${case.uri}"
+                  },
+                  "runAfter": {},
+                  "type": "Http"
+                }
+              }
+            },
+            "expression": {
+              "and": [
+                {
+                  "equals": [
+                    "@if(equals(variables('alarmContext')['metricName'], ''), 'no', 'yes')",
+                    "yes"
+                  ]
+                }
+              ]
             },
             "runAfter": {},
-            "type": "Http"
+            "type": "If"
           }
         },
         "case": "${resource_group_name}"
