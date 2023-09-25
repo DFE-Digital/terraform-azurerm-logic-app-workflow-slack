@@ -1,7 +1,7 @@
 # terraform-azurerm-logic-app-workflow-slack
 
 [![Terraform CI](https://github.com/DFE-Digital/terraform-azurerm-logic-app-workflow-slack/actions/workflows/continuous-integration-terraform.yml/badge.svg?branch=main)](https://github.com/DFE-Digital/terraform-azurerm-logic-app-workflow-slack/actions/workflows/continuous-integration-terraform.yml?branch=main)
-[![GitHub release](https://github.com/DFE-Digital/terraform-azurerm-logic-app-workflow-slack/releases)](https://github.com/DFE-Digital/terraform-azurerm-logic-app-workflow-slack/releases)
+[![GitHub release](https://img.shields.io/github/release/DFE-Digital/terraform-azurerm-logic-app-workflow-slack)](https://github.com/DFE-Digital/terraform-azurerm-logic-app-workflow-slack/releases)
 
 This module creates and manages an Azure Logic App Workflow.
 
@@ -11,7 +11,7 @@ Example module usage:
 
 ```hcl
 module "azurerm_logic_app_workflow" {
-  source              = "github.com/DFE-Digital/terraform-azurerm-logic-app-workflow-slack?ref=0.1.3"
+  source              = "github.com/DFE-Digital/terraform-azurerm-logic-app-workflow-slack?ref=0.1.4"
   environment         = "my-env"
   project_name        = "my-proj"
   azure_location      = "uksouth"
