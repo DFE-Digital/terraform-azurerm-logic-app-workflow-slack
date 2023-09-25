@@ -21,7 +21,7 @@ locals {
   workflow_cases = { for resource_group_name, case in var.resource_group_target_webhooks :
     resource_group_name => {
       body : templatefile(
-        "${path.module}/templates/slack-webhook.json.tpl",
+        "${path.module}/webhook/slack-webhook-metric-alert.json.tpl",
         {
           channel = case.channel_id
         }
