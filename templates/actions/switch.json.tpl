@@ -39,7 +39,7 @@
               "and": [
                 {
                   "equals": [
-                    "@if(equals(variables('alarmContext')['metricName'], ''), 'no', 'yes')",
+                    "@if(equals(variables('alarmContext')?['metricName'], null), 'no', 'yes')",
                     "yes"
                   ]
                 }
