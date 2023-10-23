@@ -8,19 +8,9 @@ resource "azurerm_monitor_diagnostic_setting" "default" {
 
   enabled_log {
     category = "WorkflowRuntime"
-
-    retention_policy {
-      enabled = local.enable_diagnostic_setting_retention
-      days    = local.diagnostic_setting_retention_period_days
-    }
   }
 
   metric {
     category = "AllMetrics"
-
-    retention_policy {
-      enabled = local.enable_diagnostic_setting_retention
-      days    = local.diagnostic_setting_retention_period_days
-    }
   }
 }
