@@ -57,6 +57,23 @@ variable "resource_group_target_webhooks" {
       channel_id  = string
     })
   )
-  default   = {}
-  sensitive = true
+  default = {}
+}
+
+variable "route_waf_logs" {
+  description = "Do you want to route WAF Logs to a separate Slack channel?"
+  type        = bool
+  default     = false
+}
+
+variable "waf_logs_channel_id" {
+  description = "Slack webhook destination channel ID for WAF Logs"
+  type        = string
+  default     = ""
+}
+
+variable "waf_logs_webhook_url" {
+  description = "Slack webhook URL for WAF Logs"
+  type        = string
+  default     = ""
 }

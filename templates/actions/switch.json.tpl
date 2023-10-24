@@ -1,57 +1,16 @@
 {
-  "description": "Conditionally run a subsequent action based on the Resource Group name",
+  "description": "Conditionally run a subsequent action based on an expression",
   "cases": {
-    %{ for resource_group_name, case in cases ~}
-      "${resource_group_name}-case": {
-        "actions": {
-          "${resource_group_name}-isMetricAlert-condition": {
-            "actions": {
-              "${resource_group_name}-metric": {
-                "inputs": {
-                  "body" : ${case.metric_alert},
-                  "headers": {
-                    "Content-Type": "application/json"
-                  },
-                  "method": "POST",
-                  "uri": "${case.uri}"
-                },
-                "runAfter": {},
-                "type": "Http"
-              }
-            },
-            "else": {
-              "actions": {
-                "${resource_group_name}-log": {
-                  "inputs": {
-                    "body" : ${case.log_alert},
-                    "headers": {
-                      "Content-Type": "application/json"
-                    },
-                    "method": "POST",
-                    "uri": "${case.uri}"
-                  },
-                  "runAfter": {},
-                  "type": "Http"
-                }
-              }
-            },
-            "expression": {
-              "and": [
-                {
-                  "equals": [
-                    "@if(equals(variables('alarmContext')?['metricName'], null), 'no', 'yes')",
-                    "yes"
-                  ]
-                }
-              ]
-            },
-            "runAfter": {},
-            "type": "If"
-          }
+    %{ if length(cases) > 0 ~}
+      %{ for key, case in cases ~}
+        "${key}-case": {
+          "actions": {
+            "${key}-action": ${case.action}
+          },
+          "case": "${key}"
         },
-        "case": "${resource_group_name}"
-      },
-    %{ endfor ~}
+      %{ endfor ~}
+    %{ endif ~}
     "TestCase": {
       "actions": {
         "TestSuccess": {
@@ -76,11 +35,7 @@
       }
     }
   },
-  "expression": "${var_name}",
-  "runAfter": {
-    "${run_after}": [
-      "Succeeded"
-    ]
-  },
+  "runAfter": ${run_after},
+  "expression": "${expression}",
   "type": "Switch"
 }
