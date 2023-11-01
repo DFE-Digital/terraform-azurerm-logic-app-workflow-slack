@@ -28,64 +28,34 @@
         },
         {
           "text": {
-            "text": "*Alarm status:* @{triggerBody()?['data']?['essentials']?['monitorCondition']}",
+            "text": "<@{variables('alarmContext')['dimensions'][4]['value']}|@{variables('alarmContext')['dimensions'][2]['value']}> \n@{variables('alarmContext')['dimensions'][2]['value']} ",
             "type": "mrkdwn"
           },
           "type": "section"
         },
         {
-          "type": "section",
           "text": {
-            "text": "*Exception* - <@{variables('alarmContext')['linkToSearchResultsUI']}|View in Log Analytics>\n @{variables('alarmContext')['dimensions'][3]['value']} ",
-            "type": "mrkdwn"
-          }
-        },
-        {
-          "text": {
-            "text": "```@{variables('alarmContext')['dimensions'][2]['value']}``` ",
+            "text": "*Name:* @{variables('alarmContext')['dimensions'][0]['value']} ",
             "type": "mrkdwn"
           },
           "type": "section"
         },
         {
-          "fields": [
-            {
-              "text": "*Resource Group*",
-              "type": "mrkdwn"
-            },
-            {
-              "text": "@{variables('affectedResource')[4]} ",
-              "type": "plain_text"
-            },
-            {
-              "text": "*Severity*",
-              "type": "mrkdwn"
-            },
-            {
-              "text": "@{triggerBody()?['data']?['essentials']?['severity']} ",
-              "type": "plain_text"
-            },
-            {
-              "text": "*Count*",
-              "type": "mrkdwn"
-            },
-            {
-              "text": "@{variables('alarmContext')['dimensions'][1]['value']} ",
-              "type": "plain_text"
-            },
-            {
-              "text": "*Type*",
-              "type": "mrkdwn"
-            },
-            {
-              "text": "@{variables('alarmContext')['dimensions'][4]['value']} ",
-              "type": "plain_text"
-            }
-          ],
+          "text": {
+            "text": "*Request URI:* @{variables('alarmContext')['dimensions'][1]['value']} ",
+            "type": "mrkdwn"
+          },
           "type": "section"
-        }
+        },
+        {
+          "text": {
+            "text": "*Details:* @{variables('alarmContext')['dimensions'][3]['value']} ",
+            "type": "mrkdwn"
+          },
+          "type": "section"
+        },
       ],
-      "color": "@{if(equals(triggerBody()?['data']?['essentials']?['monitorCondition'], 'Resolved'), '#50C878', '#D22B2B')}"
+      "color": "#D22B2B"
     }
   ]
 }
