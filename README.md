@@ -51,7 +51,7 @@ module "azurerm_logic_app_workflow" {
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.77.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.78.0 |
 
 ## Resources
 
