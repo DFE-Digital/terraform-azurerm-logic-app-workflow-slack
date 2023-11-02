@@ -16,30 +16,101 @@ locals {
   log_analytics_workspace_id          = local.log_analytics_workspace.id
   log_analytics_retention_period_days = var.log_analytics_retention_period_days
 
-  workflow_cases = { for resource_group_name, case in var.resource_group_target_webhooks :
+  trigger_alert_schema = templatefile("${path.module}/schema/common-alert-schema.json", {})
+
+  var_affected_resource = templatefile("${path.module}/templates/variables/affected-resource.json.tpl", {})
+  var_alarm_context = templatefile("${path.module}/templates/variables/alarm-context.json.tpl", {
+    run_after = azurerm_logic_app_action_custom.var_affected_resource.name
+  })
+
+  route_waf_logs       = var.route_waf_logs
+  waf_logs_channel_id  = var.waf_logs_channel_id
+  waf_logs_webhook_url = var.waf_logs_webhook_url
+  waf_webhook = templatefile(
+    "${path.module}/templates/actions/http.json.tpl",
+    {
+      body = templatefile(
+        "${path.module}/webhook/slack-webhook-waf-alert.json.tpl",
+        {
+          channel = local.waf_logs_channel_id
+        }
+      )
+      headers = jsonencode({
+        "Content-Type" : "application/json"
+      })
+      method = "POST"
+      uri    = local.waf_logs_webhook_url
+    }
+  )
+  waf_condition = templatefile(
+    "${path.module}/templates/actions/condition.json.tpl",
+    {
+      name = "waf"
+      run_after = jsonencode({
+        (azurerm_logic_app_action_custom.var_alarm_context.name) : ["Succeeded"]
+      })
+      haystack        = "@variables('affectedResource')[4]" # Resource Group
+      condition       = "contains"
+      needle          = "waf"
+      action_if_true  = local.route_waf_logs ? local.waf_webhook : jsonencode({})
+      action_if_false = local.workflow_switch
+    }
+  )
+
+  resource_group_target_webhooks = var.resource_group_target_webhooks
+  workflow_cases = { for resource_group_name, case in local.resource_group_target_webhooks :
     resource_group_name => {
-      metric_alert : templatefile(
-        "${path.module}/webhook/slack-webhook-metric-alert.json.tpl",
+      action : templatefile(
+        "${path.module}/templates/actions/condition.json.tpl",
         {
-          channel = case.channel_id
+          name      = resource_group_name
+          run_after = jsonencode({})
+          haystack  = "@if(equals(variables('alarmContext')?['metricName'], null), 'no', 'yes')"
+          condition = "equals"
+          needle    = "yes"
+          action_if_true = templatefile(
+            "${path.module}/templates/actions/http.json.tpl",
+            {
+              body = templatefile(
+                "${path.module}/webhook/slack-webhook-metric-alert.json.tpl",
+                {
+                  channel = case.channel_id
+                }
+              )
+              headers = jsonencode({
+                "Content-Type" : "application/json"
+              })
+              method = "POST"
+              uri    = case.webhook_url
+            }
+          )
+          action_if_false = templatefile(
+            "${path.module}/templates/actions/http.json.tpl",
+            {
+              body = templatefile(
+                "${path.module}/webhook/slack-webhook-log-alert.json.tpl",
+                {
+                  channel = case.channel_id
+                }
+              )
+              headers = jsonencode({
+                "Content-Type" : "application/json"
+              })
+              method = "POST"
+              uri    = case.webhook_url
+            }
+          )
         }
       )
-      log_alert : templatefile(
-        "${path.module}/webhook/slack-webhook-log-alert.json.tpl",
-        {
-          channel = case.channel_id
-        }
-      )
-      uri : case.webhook_url
     }
   }
 
   workflow_switch = templatefile(
     "${path.module}/templates/actions/switch.json.tpl",
     {
-      var_name  = "@variables('affectedResource')[4]" # Resource Group
-      run_after = azurerm_logic_app_action_custom.var_alarm_context.name
-      cases     = local.workflow_cases
+      run_after  = jsonencode({})
+      expression = "@variables('affectedResource')[4]" # Resource Group
+      cases      = local.workflow_cases
     }
   )
 }

@@ -3,7 +3,7 @@
 [![Terraform CI](https://github.com/DFE-Digital/terraform-azurerm-logic-app-workflow-slack/actions/workflows/continuous-integration-terraform.yml/badge.svg?branch=main)](https://github.com/DFE-Digital/terraform-azurerm-logic-app-workflow-slack/actions/workflows/continuous-integration-terraform.yml?branch=main)
 [![GitHub release](https://img.shields.io/github/release/DFE-Digital/terraform-azurerm-logic-app-workflow-slack)](https://github.com/DFE-Digital/terraform-azurerm-logic-app-workflow-slack/releases)
 
-This module creates and manages an Azure Logic App Workflow.
+This module creates and manages an Azure Logic App Workflow that can route alerts into Slack
 
 ## Usage
 
@@ -15,6 +15,13 @@ module "azurerm_logic_app_workflow" {
   environment         = "my-env"
   project_name        = "my-proj"
   azure_location      = "uksouth"
+
+  ## If you are routing Log Alerts from WAF Diagnostic Logs to the Logic App Workflow
+  ## It is recommended to parse them separately to the resource group webhooks
+  # route_waf_logs       = true
+  # waf_logs_channel_id  = "ABCABCABC"
+  # waf_logs_webhook_url = "https://hooks.slack.com/services/XXX/YYY/ZZZZZZ"
+
   resource_group_target_webhooks = {
     "my-resource-group" = {
       webhook_url = "https://hooks.slack.com/services/XXX/YYY/ZZZZZZ"
@@ -51,7 +58,7 @@ module "azurerm_logic_app_workflow" {
 | Name | Type |
 |------|------|
 | [azurerm_log_analytics_workspace.default](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace) | resource |
-| [azurerm_logic_app_action_custom.switch](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/logic_app_action_custom) | resource |
+| [azurerm_logic_app_action_custom.condition_check_for_waf](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/logic_app_action_custom) | resource |
 | [azurerm_logic_app_action_custom.var_affected_resource](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/logic_app_action_custom) | resource |
 | [azurerm_logic_app_action_custom.var_alarm_context](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/logic_app_action_custom) | resource |
 | [azurerm_logic_app_trigger_http_request.default](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/logic_app_trigger_http_request) | resource |
@@ -75,7 +82,10 @@ module "azurerm_logic_app_workflow" {
 | <a name="input_log_analytics_retention_period_days"></a> [log\_analytics\_retention\_period\_days](#input\_log\_analytics\_retention\_period\_days) | Retention period for logs in the Log Analyitcs Workspace. Has no effect if you are using an existing workspace | `number` | `30` | no |
 | <a name="input_project_name"></a> [project\_name](#input\_project\_name) | Project name. Will be used along with `environment` as a prefix for all resources. | `string` | n/a | yes |
 | <a name="input_resource_group_target_webhooks"></a> [resource\_group\_target\_webhooks](#input\_resource\_group\_target\_webhooks) | Slack webhook destinations keyed by the Resource Group you want to collect webhooks from | <pre>map(<br>    object({<br>      webhook_url = string<br>      channel_id  = string<br>    })<br>  )</pre> | `{}` | no |
+| <a name="input_route_waf_logs"></a> [route\_waf\_logs](#input\_route\_waf\_logs) | Do you want to route WAF Logs to a separate Slack channel? | `bool` | `false` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags to be applied to all resources | `map(string)` | `{}` | no |
+| <a name="input_waf_logs_channel_id"></a> [waf\_logs\_channel\_id](#input\_waf\_logs\_channel\_id) | Slack webhook destination channel ID for WAF Logs | `string` | `""` | no |
+| <a name="input_waf_logs_webhook_url"></a> [waf\_logs\_webhook\_url](#input\_waf\_logs\_webhook\_url) | Slack webhook URL for WAF Logs | `string` | `""` | no |
 
 ## Outputs
 
