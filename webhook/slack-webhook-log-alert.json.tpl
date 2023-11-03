@@ -53,7 +53,7 @@
             "type": "mrkdwn"
           },
           "type": "section"
-        },
+        }
       ],
       "color": "#D22B2B"
     }
