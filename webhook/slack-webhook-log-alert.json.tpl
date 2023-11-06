@@ -28,28 +28,21 @@
         },
         {
           "text": {
-            "text": "<@{variables('alarmContext')['dimensions'][4]['value']}|@{variables('alarmContext')['dimensions'][2]['value']}> \n@{variables('alarmContext')['dimensions'][2]['value']} ",
+            "text": "<@{variables('alarmContext')['dimensions'][0]['value']}|@{variables('alarmContext')['dimensions'][3]['value']}> \n@{variables('alarmContext')['dimensions'][2]['value']} ",
             "type": "mrkdwn"
           },
           "type": "section"
         },
         {
           "text": {
-            "text": "*Name:* @{variables('alarmContext')['dimensions'][0]['value']} ",
+            "text": "*Name:* @{variables('alarmContext')['dimensions'][1]['value']} ",
             "type": "mrkdwn"
           },
           "type": "section"
         },
         {
           "text": {
-            "text": "*Request URI:* @{variables('alarmContext')['dimensions'][1]['value']} ",
-            "type": "mrkdwn"
-          },
-          "type": "section"
-        },
-        {
-          "text": {
-            "text": "*Details:* @{variables('alarmContext')['dimensions'][3]['value']} ",
+            "text": "*Request URI:* @{variables('alarmContext')['dimensions'][4]['value']} ",
             "type": "mrkdwn"
           },
           "type": "section"
