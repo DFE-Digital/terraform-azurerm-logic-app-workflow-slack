@@ -1,5 +1,5 @@
 {
-  "description": "Send a HTTP Request",
+  "description": "${description}",
   "type": "Http",
   "inputs": {
     "uri": "${uri}",

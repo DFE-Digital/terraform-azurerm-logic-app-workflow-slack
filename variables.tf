@@ -53,8 +53,10 @@ variable "resource_group_target_webhooks" {
   description = "Slack webhook destinations keyed by the Resource Group you want to collect webhooks from"
   type = map(
     object({
-      webhook_url = string
-      channel_id  = string
+      webhook_url      = string
+      channel_id       = string
+      sev1_channel_id  = optional(string, "")
+      sev1_webhook_url = optional(string, "")
     })
   )
   default = {}

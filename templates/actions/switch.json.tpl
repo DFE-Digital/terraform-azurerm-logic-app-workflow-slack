@@ -1,11 +1,11 @@
 {
-  "description": "Conditionally run a subsequent action based on an expression",
+  "description": "${description}",
   "cases": {
     %{ if length(cases) > 0 ~}
       %{ for key, case in cases ~}
-        "${key}-case": {
+        "${key}.case": {
           "actions": {
-            "${key}-action": ${case.action}
+            "${key}.action": ${case.action}
           },
           "case": "${key}"
         },
