@@ -7,25 +7,44 @@ resource "azurerm_logic_app_workflow" "default" {
 }
 
 resource "azurerm_logic_app_trigger_http_request" "default" {
-  name         = "${local.resource_prefix}-trigger"
+  name         = "http-request-trigger"
   logic_app_id = azurerm_logic_app_workflow.default.id
   schema       = local.trigger_alert_schema
 }
 
 resource "azurerm_logic_app_action_custom" "var_affected_resource" {
-  name         = "${local.resource_prefix}-setvars0"
+  name         = "var-affected-resource"
   logic_app_id = azurerm_logic_app_workflow.default.id
   body         = local.var_affected_resource
 }
 
 resource "azurerm_logic_app_action_custom" "var_alarm_context" {
-  name         = "${local.resource_prefix}-setvars1"
+  name         = "var-alarm-context"
   logic_app_id = azurerm_logic_app_workflow.default.id
   body         = local.var_alarm_context
 }
 
+resource "azurerm_logic_app_action_custom" "var_alarm_severity" {
+  name         = "var-alarm-severity"
+  logic_app_id = azurerm_logic_app_workflow.default.id
+  body         = local.var_alarm_severity
+}
+
+resource "azurerm_logic_app_action_custom" "var_signal_type" {
+  name         = "var-signal-type"
+  logic_app_id = azurerm_logic_app_workflow.default.id
+  body         = local.var_signal_type
+}
+
 resource "azurerm_logic_app_action_custom" "condition_check_for_waf" {
-  name         = "${local.resource_prefix}-condition"
+  name         = "condition-waf-resource-group"
   logic_app_id = azurerm_logic_app_workflow.default.id
   body         = local.waf_condition
+
+  depends_on = [
+    azurerm_logic_app_action_custom.var_affected_resource,
+    azurerm_logic_app_action_custom.var_alarm_context,
+    azurerm_logic_app_action_custom.var_alarm_severity,
+    azurerm_logic_app_action_custom.var_signal_type
+  ]
 }

@@ -61,6 +61,8 @@ module "azurerm_logic_app_workflow" {
 | [azurerm_logic_app_action_custom.condition_check_for_waf](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/logic_app_action_custom) | resource |
 | [azurerm_logic_app_action_custom.var_affected_resource](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/logic_app_action_custom) | resource |
 | [azurerm_logic_app_action_custom.var_alarm_context](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/logic_app_action_custom) | resource |
+| [azurerm_logic_app_action_custom.var_alarm_severity](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/logic_app_action_custom) | resource |
+| [azurerm_logic_app_action_custom.var_signal_type](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/logic_app_action_custom) | resource |
 | [azurerm_logic_app_trigger_http_request.default](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/logic_app_trigger_http_request) | resource |
 | [azurerm_logic_app_workflow.default](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/logic_app_workflow) | resource |
 | [azurerm_management_lock.default](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_lock) | resource |
@@ -81,7 +83,7 @@ module "azurerm_logic_app_workflow" {
 | <a name="input_existing_resource_group"></a> [existing\_resource\_group](#input\_existing\_resource\_group) | Conditionally launch resources into an existing resource group. Specifying this will NOT create a resource group. | `string` | `""` | no |
 | <a name="input_log_analytics_retention_period_days"></a> [log\_analytics\_retention\_period\_days](#input\_log\_analytics\_retention\_period\_days) | Retention period for logs in the Log Analyitcs Workspace. Has no effect if you are using an existing workspace | `number` | `30` | no |
 | <a name="input_project_name"></a> [project\_name](#input\_project\_name) | Project name. Will be used along with `environment` as a prefix for all resources. | `string` | n/a | yes |
-| <a name="input_resource_group_target_webhooks"></a> [resource\_group\_target\_webhooks](#input\_resource\_group\_target\_webhooks) | Slack webhook destinations keyed by the Resource Group you want to collect webhooks from | <pre>map(<br>    object({<br>      webhook_url = string<br>      channel_id  = string<br>    })<br>  )</pre> | `{}` | no |
+| <a name="input_resource_group_target_webhooks"></a> [resource\_group\_target\_webhooks](#input\_resource\_group\_target\_webhooks) | Slack webhook destinations keyed by the Resource Group you want to collect webhooks from | <pre>map(<br>    object({<br>      webhook_url      = string<br>      channel_id       = string<br>      sev1_channel_id  = optional(string, "")<br>      sev1_webhook_url = optional(string, "")<br>    })<br>  )</pre> | `{}` | no |
 | <a name="input_route_waf_logs"></a> [route\_waf\_logs](#input\_route\_waf\_logs) | Do you want to route WAF Logs to a separate Slack channel? | `bool` | `false` | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | Tags to be applied to all resources | `map(string)` | `{}` | no |
 | <a name="input_waf_logs_channel_id"></a> [waf\_logs\_channel\_id](#input\_waf\_logs\_channel\_id) | Slack webhook destination channel ID for WAF Logs | `string` | `""` | no |
