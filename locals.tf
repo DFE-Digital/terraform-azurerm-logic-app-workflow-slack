@@ -154,6 +154,12 @@ locals {
                     "@if(equals(variables('alarmSeverity'), 'Sev1'), 'yes', 'no')",
                     "yes"
                   ]
+                },
+                {
+                  "equals" = [
+                    "@if(equals(variables('alarmSeverity'), 'Sev0'), 'yes', 'no')",
+                    "yes"
+                  ]
                 }
               ])
               description = "Check if the alarm severity is Sev1 or greater"
