@@ -56,9 +56,14 @@ locals {
       run_after = jsonencode({
         (azurerm_logic_app_action_custom.var_signal_type.name) : ["Succeeded"]
       })
-      haystack        = "@variables('affectedResource')[4]" # Resource Group
-      condition       = "contains"
-      needle          = "waf"
+      expressions = jsonencode([
+        {
+          "contains" = [
+            "@variables('affectedResource')[4]",
+            "waf"
+          ]
+        }
+      ])
       action_if_true  = local.route_waf_logs ? local.waf_webhook : jsonencode({})
       action_if_false = local.workflow_switch
       description     = "Check if affected resource group name contains 'waf'"
@@ -71,21 +76,37 @@ locals {
       action : templatefile(
         "${path.module}/templates/actions/condition.json.tpl",
         {
-          name        = "${resource_group_name}.signalType.eq.Metric"
-          run_after   = jsonencode({})
-          haystack    = "@if(equals(variables('signalType'), 'Metric'), 'yes', 'no')"
-          condition   = "equals"
-          needle      = "yes"
+          name      = "${resource_group_name}.signalType.eq.Metric"
+          run_after = jsonencode({})
+          expressions = jsonencode([
+            {
+              "equals" = [
+                "@if(equals(variables('signalType'), 'Metric'), 'yes', 'no')",
+                "yes"
+              ]
+            }
+          ])
           description = "Check if the alert signal is for a Metric alarm"
           action_if_true = templatefile(
             "${path.module}/templates/actions/condition.json.tpl",
             {
-              name        = "${resource_group_name}.metric.alarmSeverity.eq.Sev1"
-              run_after   = jsonencode({})
-              haystack    = "@if(equals(variables('alarmSeverity'), 'Sev1'), 'yes', 'no')"
-              condition   = "equals"
-              needle      = "yes"
-              description = "Check if the alarm severity is Sev1"
+              name      = "${resource_group_name}.metric.alarmSeverity.eq.Sev1"
+              run_after = jsonencode({})
+              expressions = jsonencode([
+                {
+                  "equals" = [
+                    "@if(equals(variables('alarmSeverity'), 'Sev1'), 'yes', 'no')",
+                    "yes"
+                  ]
+                },
+                {
+                  "equals" = [
+                    "@if(equals(variables('alarmSeverity'), 'Sev0'), 'yes', 'no')",
+                    "yes"
+                  ]
+                }
+              ])
+              description = "Check if the alarm severity is Sev1 or greater"
               action_if_true = templatefile(
                 "${path.module}/templates/actions/http.json.tpl",
                 {
@@ -125,12 +146,17 @@ locals {
           action_if_false = templatefile(
             "${path.module}/templates/actions/condition.json.tpl",
             {
-              name        = "${resource_group_name}.log.alarmSeverity.eq.Sev1"
-              run_after   = jsonencode({})
-              haystack    = "@if(equals(variables('alarmSeverity'), 'Sev1'), 'yes', 'no')"
-              condition   = "equals"
-              needle      = "yes"
-              description = "Check if the alarm severity is Sev1"
+              name      = "${resource_group_name}.log.alarmSeverity.eq.Sev1"
+              run_after = jsonencode({})
+              expressions = jsonencode([
+                {
+                  "equals" = [
+                    "@if(equals(variables('alarmSeverity'), 'Sev1'), 'yes', 'no')",
+                    "yes"
+                  ]
+                }
+              ])
+              description = "Check if the alarm severity is Sev1 or greater"
               action_if_true = templatefile(
                 "${path.module}/templates/actions/http.json.tpl",
                 {

@@ -10,14 +10,7 @@
   },
   "runAfter": ${run_after},
   "expression": {
-    "and": [
-      {
-        "${condition}": [
-          "${haystack}",
-          "${needle}"
-        ]
-      }
-    ]
+    "any": ${expressions}
   },
   "type": "If"
 }
