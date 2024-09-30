@@ -10,7 +10,7 @@
   },
   "runAfter": ${run_after},
   "expression": {
-    "any": ${expressions}
+    "or": ${expressions}
   },
   "type": "If"
 }
