@@ -23,8 +23,10 @@ locals {
     map = jsonencode({ for resource_group, webhook in local.resource_group_target_webhooks : (resource_group) => {
       "webhook_url" : webhook.webhook_url,
       "channel_id" : webhook.channel_id,
+      "message_tag" : webhook.message_tag,
       "sev1_webhook_url" : webhook.sev1_webhook_url != "" ? webhook.sev1_webhook_url : webhook.webhook_url,
-      "sev1_channel_id" : webhook.sev1_channel_id != "" ? webhook.sev1_channel_id : webhook.channel_id
+      "sev1_channel_id" : webhook.sev1_channel_id != "" ? webhook.sev1_channel_id : webhook.channel_id,
+      "sev1_message_tag" : webhook.sev1_message_tag != "" ? webhook.sev1_message_tag : webhook.message_tag,
       }
     })
   })
@@ -54,7 +56,8 @@ locals {
       body = templatefile(
         "${path.module}/webhook/slack-webhook-waf-alert.json.tpl",
         {
-          channel = local.waf_logs_channel_id
+          channel     = local.waf_logs_channel_id
+          message_tag = ""
         }
       )
       headers = jsonencode({
@@ -114,7 +117,8 @@ locals {
       body = templatefile(
         "${path.module}/webhook/slack-webhook-metric-alert.json.tpl",
         {
-          channel = "@if(or(equals(variables('signalType'), 'Sev1'), equals(variables('signalType'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_channel_id'], variables('webhookMap')[variables('resourceGroup')]['channel_id'])"
+          channel     = "@if(or(equals(variables('signalType'), 'Sev1'), equals(variables('signalType'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_channel_id'], variables('webhookMap')[variables('resourceGroup')]['channel_id'])"
+          message_tag = "@if(or(equals(variables('signalType'), 'Sev1'), equals(variables('signalType'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_message_tag'], variables('webhookMap')[variables('resourceGroup')]['message_tag'])"
         }
       )
       headers = jsonencode({
@@ -132,7 +136,8 @@ locals {
       body = templatefile(
         "${path.module}/webhook/slack-webhook-log-alert.json.tpl",
         {
-          channel = "@if(or(equals(variables('signalType'), 'Sev1'), equals(variables('signalType'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_channel_id'], variables('webhookMap')[variables('resourceGroup')]['channel_id'])"
+          channel     = "@if(or(equals(variables('signalType'), 'Sev1'), equals(variables('signalType'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_channel_id'], variables('webhookMap')[variables('resourceGroup')]['channel_id'])"
+          message_tag = "@if(or(equals(variables('signalType'), 'Sev1'), equals(variables('signalType'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_message_tag'], variables('webhookMap')[variables('resourceGroup')]['message_tag'])"
         }
       )
       headers = jsonencode({

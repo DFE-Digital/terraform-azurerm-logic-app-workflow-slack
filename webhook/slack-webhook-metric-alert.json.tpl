@@ -5,13 +5,15 @@
   "attachments": [
     {
       "blocks": [
+        %{ if message_tag != "" }
         {
           "text": {
-            "text": "<!here>",
+            "text": "${message_tag}",
             "type": "mrkdwn"
           },
           "type": "section"
         },
+        %{ endif }
         {
           "text": {
             "text": "@{triggerBody()?['data']?['essentials']?['alertRule']}",
