@@ -16,7 +16,7 @@
         %{ endif }
         {
           "text": {
-            "text": "*Alert Rule:* @{triggerBody()?['data']?['essentials']?['alertRule']} \n*Description:* _@{triggerBody()?['data']?['essentials']?['description']}_ ",
+            "text": "*Alert Rule:* @{triggerBody()?['data']?['essentials']?['alertRule']} \n*Description:* @{triggerBody()?['data']?['essentials']?['description']} ",
             "type": "mrkdwn"
           },
           "type": "section"
