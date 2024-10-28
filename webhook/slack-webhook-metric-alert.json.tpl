@@ -49,7 +49,7 @@
           "type": "section"
         }
       ],
-      "color": "@{if(equals(triggerBody()?['data']?['essentials']?['monitorCondition'], 'Resolved'), '#50C878', '#D22B2B')}"
+      "color": "@{if(equals(triggerBody()?['data']?['essentials']?['monitorCondition'], 'Resolved'), '#00703c', '#d4351c')}"
     }
   ]
 }
