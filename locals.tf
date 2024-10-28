@@ -35,6 +35,9 @@ locals {
   var_alarm_severity = templatefile("${path.module}/templates/variables/severity.json.tpl", {})
   var_signal_type    = templatefile("${path.module}/templates/variables/signal-type.json.tpl", {})
   var_is_waf         = templatefile("${path.module}/templates/variables/is-waf-event.json.tpl", {})
+  var_tenant_id = templatefile("${path.module}/templates/variables/tenant-id.json.tpl", {
+    tenant_id = data.azurerm_subscription.current.tenant_id
+  })
 
   workflow_variables = {
     "affected-resource" : local.var_affected_resource,
@@ -44,6 +47,7 @@ locals {
     "alarm-severity" : local.var_alarm_severity,
     "signal-type" : local.var_signal_type,
     "is-waf" : local.var_is_waf,
+    "tenant-id" : local.var_tenant_id,
   }
 
   route_waf_logs       = var.route_waf_logs

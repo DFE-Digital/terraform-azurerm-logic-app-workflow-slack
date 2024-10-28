@@ -16,21 +16,7 @@
         %{ endif }
         {
           "text": {
-            "text": "@{triggerBody()?['data']?['essentials']?['alertRule']}",
-            "type": "plain_text"
-          },
-          "type": "header"
-        },
-        {
-          "text": {
-            "text": "_@{triggerBody()?['data']?['essentials']?['description']}_",
-            "type": "mrkdwn"
-          },
-          "type": "section"
-        },
-        {
-          "text": {
-            "text": "*Alarm status:* @{triggerBody()?['data']?['essentials']?['monitorCondition']}",
+            "text": "*Alert Rule:* @{triggerBody()?['data']?['essentials']?['alertRule']} \n*Description:* _@{triggerBody()?['data']?['essentials']?['description']}_ ",
             "type": "mrkdwn"
           },
           "type": "section"
@@ -38,46 +24,28 @@
         {
           "fields": [
             {
-              "text": "*Resource Group*",
+              "text": "*Resource:* \n <@{concat('https://portal.azure.com/#@', variables('tenantID'))}/resource@{triggerBody()?['data']?['essentials']?['alertTargetIDs']?[0]}|@{triggerBody()?['data']?['essentials']?['configurationItems']?[0]}>",
               "type": "mrkdwn"
             },
             {
-              "text": "@{variables('affectedResource')[4]} ",
-              "type": "plain_text"
-            },
-            {
-              "text": "*Provider*",
+              "text": "*Severity:* \n @{variables('alarmSeverity')}",
               "type": "mrkdwn"
-            },
-            {
-              "text": "@{variables('AffectedResource')[6]} ",
-              "type": "plain_text"
-            },
-            {
-              "text": "*Severity*",
-              "type": "mrkdwn"
-            },
-            {
-              "text": "@{triggerBody()?['data']?['essentials']?['severity']} ",
-              "type": "plain_text"
-            },
-            {
-              "text": "*Metric definition*",
-              "type": "mrkdwn"
-            },
-            {
-              "text": "@{variables('alarmContext')['metricName']} @{variables('alarmContext')['timeAggregation']} @{variables('alarmContext')['operator']} @{variables('alarmContext')['threshold']}",
-              "type": "plain_text"
-            },
-            {
-              "text": "*Recorded value*",
-              "type": "mrkdwn"
-            },
-            {
-              "text": "@{variables('alarmContext')['metricValue']} ",
-              "type": "plain_text"
             }
           ],
+          "type": "section"
+        },
+        {
+          "text": {
+            "text": "*Metric:* @{variables('alarmContext')['metricName']} @{variables('alarmContext')['timeAggregation']} @{variables('alarmContext')['operator']} @{variables('alarmContext')['threshold']}",
+            "type": "mrkdwn"
+          },
+          "type": "section"
+        },
+        {
+          "text": {
+            "text": "*Recorded value:* \n@{variables('alarmContext')['metricValue']} ",
+            "type": "mrkdwn"
+          },
           "type": "section"
         }
       ],
