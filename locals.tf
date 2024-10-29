@@ -101,10 +101,10 @@ locals {
     {
       name        = "conditionType.switch"
       run_after   = jsonencode({})
-      expression  = "@triggerBody()?['data']?['essentials']?['targetResourceType']"
+      expression  = "@replace(triggerBody()?['data']?['essentials']?['targetResourceType'], '/', '.')"
       description = "Check to see what resource type the alert is bound to"
       cases = {
-        "microsoft.operationalinsights/workspaces" : { # Alert for Log Analytics
+        "microsoft.operationalinsights.workspaces" : { # Alert for Log Analytics
           "action" : local.log_webhook
         }
       }
@@ -187,8 +187,6 @@ locals {
       uri         = "@if(or(equals(variables('alarmSeverity'), 'Sev1'), equals(variables('alarmSeverity'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_webhook_url'], variables('webhookMap')[variables('resourceGroup')]['webhook_url'])"
     }
   )
-
-
 
   resource_group_target_webhooks = var.resource_group_target_webhooks
 }

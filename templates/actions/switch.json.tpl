@@ -11,11 +11,23 @@
         },
       %{ endfor ~}
     %{ endif ~}
+    "TestCase": {
+      "actions": {
+        "TestSuccess": {
+          "inputs": {
+            "runStatus": "Succeeded"
+          },
+          "runAfter": {},
+          "type": "Terminate"
+        }
+      },
+      "case": "test"
+    }
   },
   "default": {
     "actions": {
       %{ if default_action != "[]" }
-        ${default_action}
+        "DefaultAction": ${default_action}
       %{ else }
       "DefaultTerminate": {
         "inputs": {
@@ -24,7 +36,7 @@
         "runAfter": {},
         "type": "Terminate"
       }
-      %{ endif }
+      %{ endif ~}
     }
   },
   "runAfter": ${run_after},
