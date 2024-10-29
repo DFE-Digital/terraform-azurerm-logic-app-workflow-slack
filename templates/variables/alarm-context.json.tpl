@@ -7,10 +7,6 @@
       "value": "@triggerBody()?['data']?['alertContext']['condition']['allOf'][0]"
     }]
   },
-  "runAfter": {
-    "${run_after}": [
-      "Succeeded"
-    ]
-  },
+  "runAfter": {},
   "type": "InitializeVariable"
 }

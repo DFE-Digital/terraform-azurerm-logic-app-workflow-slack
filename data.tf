@@ -10,3 +10,5 @@ data "azurerm_log_analytics_workspace" "existing_log_analytics_workspace" {
   resource_group_name = local.resource_group.name
   name                = local.existing_log_analytics_workspace
 }
+
+data "azurerm_subscription" "current" {}

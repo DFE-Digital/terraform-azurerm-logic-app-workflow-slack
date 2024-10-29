@@ -21,11 +21,14 @@
           "type": "Terminate"
         }
       },
-      "case": "test-RG"
+      "case": "test"
     }
   },
   "default": {
     "actions": {
+      %{ if default_action != "[]" }
+        "DefaultAction": ${default_action}
+      %{ else }
       "DefaultTerminate": {
         "inputs": {
           "runStatus": "Cancelled"
@@ -33,6 +36,7 @@
         "runAfter": {},
         "type": "Terminate"
       }
+      %{ endif ~}
     }
   },
   "runAfter": ${run_after},

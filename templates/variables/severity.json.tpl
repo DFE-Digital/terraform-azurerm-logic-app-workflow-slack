@@ -7,10 +7,6 @@
       "value": "@triggerBody()?['data']?['essentials']?['severity']"
     }]
   },
-  "runAfter": {
-    "${run_after}": [
-      "Succeeded"
-    ]
-  },
+  "runAfter": {},
   "type": "InitializeVariable"
 }

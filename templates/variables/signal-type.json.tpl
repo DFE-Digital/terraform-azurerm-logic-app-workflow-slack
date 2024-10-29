@@ -7,10 +7,6 @@
       "value": "@triggerBody()?['data']?['essentials']?['signalType']"
     }]
   },
-  "runAfter": {
-    "${run_after}": [
-      "Succeeded"
-    ]
-  },
+  "runAfter": {},
   "type": "InitializeVariable"
 }

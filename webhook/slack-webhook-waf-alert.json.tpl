@@ -5,6 +5,15 @@
   "attachments": [
     {
       "blocks": [
+        %{ if message_tag != "" }
+        {
+          "text": {
+            "text": "${message_tag}",
+            "type": "mrkdwn"
+          },
+          "type": "section"
+        },
+        %{ endif }
         {
           "text": {
             "text": "*Hostname:* @{variables('alarmContext')['dimensions'][1]['value']} ",

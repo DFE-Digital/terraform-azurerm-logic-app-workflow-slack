@@ -5,50 +5,51 @@
   "attachments": [
     {
       "blocks": [
+        %{ if message_tag != "" }
         {
           "text": {
-            "text": "<!here>",
+            "text": "${message_tag}",
+            "type": "mrkdwn"
+          },
+          "type": "section"
+        },
+        %{ endif }
+        {
+          "text": {
+            "text": "*Alert Rule:* @{triggerBody()?['data']?['essentials']?['alertRule']} \n*Description:* @{triggerBody()?['data']?['essentials']?['description']} ",
+            "type": "mrkdwn"
+          },
+          "type": "section"
+        },
+        {
+          "fields": [
+            {
+              "text": "*Resource:* \n <@{concat('https://portal.azure.com/#@', variables('tenantID'))}/resource@{triggerBody()?['data']?['essentials']?['alertTargetIDs']?[0]}|@{last(variables('affectedResource'))}>",
+              "type": "mrkdwn"
+            },
+            {
+              "text": "*Severity:* \n @{variables('alarmSeverity')}",
+              "type": "mrkdwn"
+            }
+          ],
+          "type": "section"
+        },
+        {
+          "text": {
+            "text": "*Metric:* \n@{variables('alarmContext')['metricMeasureColumn']} @{variables('alarmContext')['timeAggregation']} @{variables('alarmContext')['operator']} @{variables('alarmContext')['threshold']}",
             "type": "mrkdwn"
           },
           "type": "section"
         },
         {
           "text": {
-            "text": "@{triggerBody()?['data']?['essentials']?['alertRule']}",
-            "type": "plain_text"
-          },
-          "type": "header"
-        },
-        {
-          "text": {
-            "text": "_@{triggerBody()?['data']?['essentials']?['description']}_",
-            "type": "mrkdwn"
-          },
-          "type": "section"
-        },
-        {
-          "text": {
-            "text": "<@{variables('alarmContext')['dimensions'][0]['value']}|@{variables('alarmContext')['dimensions'][3]['value']}> \n@{variables('alarmContext')['dimensions'][2]['value']} ",
-            "type": "mrkdwn"
-          },
-          "type": "section"
-        },
-        {
-          "text": {
-            "text": "*Name:* @{variables('alarmContext')['dimensions'][1]['value']} ",
-            "type": "mrkdwn"
-          },
-          "type": "section"
-        },
-        {
-          "text": {
-            "text": "*Request URI:* @{variables('alarmContext')['dimensions'][4]['value']} ",
+            "text": "*Recorded value:* \n@{variables('alarmContext')['metricValue']} \n <@{variables('alarmContext')['linkToFilteredSearchResultsUI']}|Go to Log Analytics and run query>",
             "type": "mrkdwn"
           },
           "type": "section"
         }
       ],
-      "color": "#D22B2B"
+      "color": "#f47738"
     }
   ]
 }

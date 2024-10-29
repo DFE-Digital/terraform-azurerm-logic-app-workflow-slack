@@ -24,7 +24,7 @@
         {
           "fields": [
             {
-              "text": "*Resource:* \n <@{concat('https://portal.azure.com/#@', variables('tenantID'))}/resource@{triggerBody()?['data']?['essentials']?['alertTargetIDs']?[0]}|@{triggerBody()?['data']?['essentials']?['configurationItems']?[0]}>",
+              "text": "*Resource:* \n <@{concat('https://portal.azure.com/#@', variables('tenantID'))}/resource@{triggerBody()?['data']?['essentials']?['alertTargetIDs']?[0]}|@{last(variables('affectedResource'))}>",
               "type": "mrkdwn"
             },
             {
@@ -36,20 +36,20 @@
         },
         {
           "text": {
-            "text": "*Metric:* @{variables('alarmContext')['metricName']} @{variables('alarmContext')['timeAggregation']} @{variables('alarmContext')['operator']} @{variables('alarmContext')['threshold']}",
+            "text": "*Exception:* <@{variables('alarmContext')['dimensions'][0]['value']}|@{variables('alarmContext')['dimensions'][3]['value']}> \n@{variables('alarmContext')['dimensions'][2]['value']} ",
             "type": "mrkdwn"
           },
           "type": "section"
         },
         {
           "text": {
-            "text": "*Recorded value:* \n@{variables('alarmContext')['metricValue']} ",
+            "text": "*Request:* @{variables('alarmContext')['dimensions'][4]['value']} \n@{variables('alarmContext')['dimensions'][1]['value']}",
             "type": "mrkdwn"
           },
           "type": "section"
         }
       ],
-      "color": "@{if(equals(triggerBody()?['data']?['essentials']?['monitorCondition'], 'Resolved'), '#00703c', '#d4351c')}"
+      "color": "#1d70b8"
     }
   ]
 }
