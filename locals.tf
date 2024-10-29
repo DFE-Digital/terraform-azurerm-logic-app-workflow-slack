@@ -138,7 +138,7 @@ locals {
     "${path.module}/templates/actions/http.json.tpl",
     {
       body = templatefile(
-        "${path.module}/webhook/slack-webhook-log-alert.json.tpl",
+        "${path.module}/webhook/slack-webhook-exception-alert.json.tpl",
         {
           channel     = "@if(or(equals(variables('alarmSeverity'), 'Sev1'), equals(variables('alarmSeverity'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_channel_id'], variables('webhookMap')[variables('resourceGroup')]['channel_id'])"
           message_tag = "@if(or(equals(variables('alarmSeverity'), 'Sev1'), equals(variables('alarmSeverity'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_message_tag'], variables('webhookMap')[variables('resourceGroup')]['message_tag'])"
