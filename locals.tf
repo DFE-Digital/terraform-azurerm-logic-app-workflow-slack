@@ -121,8 +121,8 @@ locals {
       body = templatefile(
         "${path.module}/webhook/slack-webhook-metric-alert.json.tpl",
         {
-          channel     = "@if(or(equals(variables('signalType'), 'Sev1'), equals(variables('signalType'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_channel_id'], variables('webhookMap')[variables('resourceGroup')]['channel_id'])"
-          message_tag = "@if(or(equals(variables('signalType'), 'Sev1'), equals(variables('signalType'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_message_tag'], variables('webhookMap')[variables('resourceGroup')]['message_tag'])"
+          channel     = "@if(or(equals(variables('alarmSeverity'), 'Sev1'), equals(variables('alarmSeverity'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_channel_id'], variables('webhookMap')[variables('resourceGroup')]['channel_id'])"
+          message_tag = "@if(or(equals(variables('alarmSeverity'), 'Sev1'), equals(variables('alarmSeverity'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_message_tag'], variables('webhookMap')[variables('resourceGroup')]['message_tag'])"
         }
       )
       headers = jsonencode({
@@ -130,7 +130,7 @@ locals {
       })
       description = "Send a Metric alert to Slack Channel"
       method      = "POST"
-      uri         = "@if(or(equals(variables('signalType'), 'Sev1'), equals(variables('signalType'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_webhook_url'], variables('webhookMap')[variables('resourceGroup')]['webhook_url'])"
+      uri         = "@if(or(equals(variables('alarmSeverity'), 'Sev1'), equals(variables('alarmSeverity'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_webhook_url'], variables('webhookMap')[variables('resourceGroup')]['webhook_url'])"
     }
   )
 
@@ -140,8 +140,8 @@ locals {
       body = templatefile(
         "${path.module}/webhook/slack-webhook-log-alert.json.tpl",
         {
-          channel     = "@if(or(equals(variables('signalType'), 'Sev1'), equals(variables('signalType'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_channel_id'], variables('webhookMap')[variables('resourceGroup')]['channel_id'])"
-          message_tag = "@if(or(equals(variables('signalType'), 'Sev1'), equals(variables('signalType'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_message_tag'], variables('webhookMap')[variables('resourceGroup')]['message_tag'])"
+          channel     = "@if(or(equals(variables('alarmSeverity'), 'Sev1'), equals(variables('alarmSeverity'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_channel_id'], variables('webhookMap')[variables('resourceGroup')]['channel_id'])"
+          message_tag = "@if(or(equals(variables('alarmSeverity'), 'Sev1'), equals(variables('alarmSeverity'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_message_tag'], variables('webhookMap')[variables('resourceGroup')]['message_tag'])"
         }
       )
       headers = jsonencode({
@@ -149,9 +149,11 @@ locals {
       })
       description = "Send a Log alert to Slack Channel"
       method      = "POST"
-      uri         = "@if(or(equals(variables('signalType'), 'Sev1'), equals(variables('signalType'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_webhook_url'], variables('webhookMap')[variables('resourceGroup')]['webhook_url'])"
+      uri         = "@if(or(equals(variables('alarmSeverity'), 'Sev1'), equals(variables('alarmSeverity'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_webhook_url'], variables('webhookMap')[variables('resourceGroup')]['webhook_url'])"
     }
   )
+
+
 
   resource_group_target_webhooks = var.resource_group_target_webhooks
 }
