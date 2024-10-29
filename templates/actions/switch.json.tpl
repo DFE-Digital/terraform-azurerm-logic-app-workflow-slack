@@ -11,21 +11,12 @@
         },
       %{ endfor ~}
     %{ endif ~}
-    "TestCase": {
-      "actions": {
-        "TestSuccess": {
-          "inputs": {
-            "runStatus": "Succeeded"
-          },
-          "runAfter": {},
-          "type": "Terminate"
-        }
-      },
-      "case": "test-RG"
-    }
   },
   "default": {
     "actions": {
+      %{ if default_action != "[]" }
+        ${default_action}
+      %{ else }
       "DefaultTerminate": {
         "inputs": {
           "runStatus": "Cancelled"
@@ -33,6 +24,7 @@
         "runAfter": {},
         "type": "Terminate"
       }
+      %{ endif }
     }
   },
   "runAfter": ${run_after},

@@ -91,8 +91,24 @@ locals {
         }
       ])
       action_if_true  = local.route_waf_logs ? local.waf_webhook : jsonencode({})
-      action_if_false = local.signal_condition
+      action_if_false = local.conditiontype_switch
       description     = "Check if affected resource group name contains 'waf'"
+    }
+  )
+
+  conditiontype_switch = templatefile(
+    "${path.module}/templates/actions/switch.json.tpl",
+    {
+      name        = "conditionType.switch"
+      run_after   = jsonencode({})
+      expression  = "@triggerBody()?['data']?['essentials']?['targetResourceType']"
+      description = "Check to see what resource type the alert is bound to"
+      cases = {
+        "microsoft.operationalinsights/workspaces" : { # Alert for Log Analytics
+          "action" : local.log_webhook
+        }
+      }
+      default_action = local.signal_condition
     }
   )
 
@@ -111,7 +127,7 @@ locals {
       ])
       description     = "Check if the alert signal is for a Metric alarm"
       action_if_true  = local.metric_webhook
-      action_if_false = local.log_webhook
+      action_if_false = local.exception_webhook
     }
   )
 
@@ -134,11 +150,30 @@ locals {
     }
   )
 
-  log_webhook = templatefile(
+  exception_webhook = templatefile(
     "${path.module}/templates/actions/http.json.tpl",
     {
       body = templatefile(
         "${path.module}/webhook/slack-webhook-exception-alert.json.tpl",
+        {
+          channel     = "@if(or(equals(variables('alarmSeverity'), 'Sev1'), equals(variables('alarmSeverity'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_channel_id'], variables('webhookMap')[variables('resourceGroup')]['channel_id'])"
+          message_tag = "@if(or(equals(variables('alarmSeverity'), 'Sev1'), equals(variables('alarmSeverity'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_message_tag'], variables('webhookMap')[variables('resourceGroup')]['message_tag'])"
+        }
+      )
+      headers = jsonencode({
+        "Content-Type" : "application/json"
+      })
+      description = "Send an Exception alert to Slack Channel"
+      method      = "POST"
+      uri         = "@if(or(equals(variables('alarmSeverity'), 'Sev1'), equals(variables('alarmSeverity'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_webhook_url'], variables('webhookMap')[variables('resourceGroup')]['webhook_url'])"
+    }
+  )
+
+  log_webhook = templatefile(
+    "${path.module}/templates/actions/http.json.tpl",
+    {
+      body = templatefile(
+        "${path.module}/webhook/slack-webhook-log-alert.json.tpl",
         {
           channel     = "@if(or(equals(variables('alarmSeverity'), 'Sev1'), equals(variables('alarmSeverity'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_channel_id'], variables('webhookMap')[variables('resourceGroup')]['channel_id'])"
           message_tag = "@if(or(equals(variables('alarmSeverity'), 'Sev1'), equals(variables('alarmSeverity'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_message_tag'], variables('webhookMap')[variables('resourceGroup')]['message_tag'])"
