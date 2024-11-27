@@ -36,14 +36,14 @@
         },
         {
           "text": {
-            "text": "*Exception:* <@{variables('alarmContext')['dimensions'][0]['value']}|@{variables('alarmContext')['dimensions'][3]['value']}> \n@{variables('alarmContext')['dimensions'][2]['value']} ",
+            "text": "*Exception:* <@{variables('alarmContext')['condition']['allOf'][0]['dimensions'][0]['value']}|@{variables('alarmContext')['condition']['allOf'][0]['dimensions'][3]['value']}> \n@{variables('alarmContext')['condition']['allOf'][0]['dimensions'][2]['value']} ",
             "type": "mrkdwn"
           },
           "type": "section"
         },
         {
           "text": {
-            "text": "*Request:* @{variables('alarmContext')['dimensions'][4]['value']} \n@{variables('alarmContext')['dimensions'][1]['value']}",
+            "text": "*Request:* @{variables('alarmContext')['condition']['allOf'][0]['dimensions'][4]['value']} \n@{variables('alarmContext')['condition']['allOf'][0]['dimensions'][1]['value']}",
             "type": "mrkdwn"
           },
           "type": "section"

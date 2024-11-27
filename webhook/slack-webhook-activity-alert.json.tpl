@@ -24,11 +24,11 @@
         {
           "fields": [
             {
-              "text": "*Resource:* \n <@{concat('https://portal.azure.com/#@', variables('tenantID'))}/resource@{triggerBody()?['data']?['essentials']?['alertTargetIDs']?[0]}|@{last(variables('affectedResource'))}>",
+              "text": "*Resource:* \n <@{concat('https://portal.azure.com/#@', variables('tenantID'))}/resource@{triggerBody()?['data']?['essentials']?['alertTargetIDs']?[0]}|@{triggerBody()?['data']?['essentials']?['configurationItems']?[0]}>",
               "type": "mrkdwn"
             },
             {
-              "text": "*Severity:* \n @{variables('alarmSeverity')}",
+              "text": "*Type:* \n @{triggerBody()?['data']?['essentials']?['targetResourceType']}",
               "type": "mrkdwn"
             }
           ],
@@ -36,20 +36,20 @@
         },
         {
           "text": {
-            "text": "*Metric:* \n@{variables('alarmContext')['condition']['allOf'][0]['metricMeasureColumn']} @{variables('alarmContext')['condition']['allOf'][0]['timeAggregation']} @{variables('alarmContext')['condition']['allOf'][0]['operator']} @{variables('alarmContext')['condition']['allOf'][0]['threshold']}",
+            "text": "*Caller:* @{variables('alarmContext')['caller']}",
             "type": "mrkdwn"
           },
           "type": "section"
         },
         {
           "text": {
-            "text": "*Recorded value:* \n@{variables('alarmContext')['condition']['allOf'][0]['metricValue']} \n <@{variables('alarmContext')['condition']['allOf'][0]['linkToFilteredSearchResultsUI']}|Go to Log Analytics and run query>",
+            "text": "*Operation:* \n@{variables('alarmContext')['operationName']} (@{variables('alarmContext')['status']})",
             "type": "mrkdwn"
           },
           "type": "section"
         }
       ],
-      "color": "#f47738"
+      "color": "#003764"
     }
   ]
 }
