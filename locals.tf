@@ -108,26 +108,48 @@ locals {
           "action" : local.log_webhook
         }
       }
-      default_action = local.signal_condition
+      default_action = local.signaltype_switch
     }
   )
 
-  signal_condition = templatefile(
-    "${path.module}/templates/actions/condition.json.tpl",
+  signaltype_switch = templatefile(
+    "${path.module}/templates/actions/switch.json.tpl",
     {
-      name      = "signalType.eq.Metric"
-      run_after = jsonencode({})
-      expressions = jsonencode([
-        {
-          "equals" = [
-            "@if(equals(variables('signalType'), 'Metric'), 'yes', 'no')",
-            "yes"
-          ]
+      name        = "signalType.switch"
+      run_after   = jsonencode({})
+      expression  = "@variables('signalType')"
+      description = "Check to see what signal type the alert is bound to"
+      cases = {
+        "Metric" : { # Alert for Metric alarms
+          "action" : local.metric_webhook
+        },
+        "Activity Log" : { # Alert for Activity Log alarms
+          "action" : local.activity_webhook
         }
-      ])
-      description     = "Check if the alert signal is for a Metric alarm"
-      action_if_true  = local.metric_webhook
-      action_if_false = local.exception_webhook
+        "Log" : { # Alert for Log Query alarms
+          "action" : local.exception_webhook
+        }
+      }
+      default_action = jsonencode([])
+    }
+  )
+
+  activity_webhook = templatefile(
+    "${path.module}/templates/actions/http.json.tpl",
+    {
+      body = templatefile(
+        "${path.module}/webhook/slack-webhook-activity-alert.json.tpl",
+        {
+          channel     = "@variables('webhookMap')[variables('resourceGroup')]['channel_id']"
+          message_tag = "@variables('webhookMap')[variables('resourceGroup')]['message_tag']"
+        }
+      )
+      headers = jsonencode({
+        "Content-Type" : "application/json"
+      })
+      description = "Send an Activity Log alert to Slack Channel"
+      method      = "POST"
+      uri         = "@variables('webhookMap')[variables('resourceGroup')]['webhook_url']"
     }
   )
 

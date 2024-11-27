@@ -4,7 +4,7 @@
     "variables": [{
       "name": "alarmContext",
       "type": "object",
-      "value": "@triggerBody()?['data']?['alertContext']['condition']['allOf'][0]"
+      "value": "@triggerBody()?['data']?['alertContext']"
     }]
   },
   "runAfter": {},

@@ -11,9 +11,9 @@
         },
       %{ endfor ~}
     %{ endif ~}
-    "TestCase": {
+    "${name}.TestCase": {
       "actions": {
-        "TestSuccess": {
+        "${name}.Action.TestSuccess": {
           "inputs": {
             "runStatus": "Succeeded"
           },

@@ -36,14 +36,14 @@
         },
         {
           "text": {
-            "text": "*Metric:* @{variables('alarmContext')['metricName']} @{variables('alarmContext')['timeAggregation']} @{variables('alarmContext')['operator']} @{variables('alarmContext')['threshold']}",
+            "text": "*Metric:* @{variables('alarmContext')['condition']['allOf'][0]['metricName']} @{variables('alarmContext')['condition']['allOf'][0]['timeAggregation']} @{variables('alarmContext')['condition']['allOf'][0]['operator']} @{variables('alarmContext')['condition']['allOf'][0]['threshold']}",
             "type": "mrkdwn"
           },
           "type": "section"
         },
         {
           "text": {
-            "text": "*Recorded value:* \n@{variables('alarmContext')['metricValue']} ",
+            "text": "*Recorded value:* \n@{variables('alarmContext')['condition']['allOf'][0]['metricValue']} ",
             "type": "mrkdwn"
           },
           "type": "section"
