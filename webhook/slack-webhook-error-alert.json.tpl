@@ -28,7 +28,7 @@
               "type": "mrkdwn"
             },
             {
-              "text": "*Log level:* \n @{variables('alarmContext')['condition']['allOf'][0]['dimensions'][2]['value']}",
+              "text": "*Log level:* \n @{variables('alarmContext')['condition']['allOf'][0]['dimensions'][4]['value']}",
               "type": "mrkdwn"
             }
           ],
@@ -36,17 +36,19 @@
         },
         {
           "text": {
-            "text": "*Message:* \n@{variables('alarmContext')['condition']['allOf'][0]['dimensions'][0]['value']}",
+            "text": "*@{variables('alarmContext')['condition']['allOf'][0]['dimensions'][0]['value']}* \n @{variables('alarmContext')['condition']['allOf'][0]['dimensions'][3]['value']}",
             "type": "mrkdwn"
           },
           "type": "section"
         },
         {
-          "text": {
-            "text": "*Operation name:* \n@{variables('alarmContext')['condition']['allOf'][0]['dimensions'][1]['value']} \n <@{variables('alarmContext')['condition']['allOf'][0]['linkToFilteredSearchResultsUI']}|Go to Log Analytics and run query>",
-            "type": "mrkdwn"
-          },
-          "type": "section"
+          "type": "context",
+          "elements": [
+            {
+              "text": "*Operation ID:* @{variables('alarmContext')['condition']['allOf'][0]['dimensions'][1]['value']}",
+              "type": "mrkdwn"
+            }
+          ]
         }
       ],
       "color": "#4c2c92"
