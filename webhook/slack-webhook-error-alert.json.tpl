@@ -24,7 +24,7 @@
         {
           "fields": [
             {
-              "text": "*Resource:* \n <@{concat('https://portal.azure.com/#@', variables('tenantID'))}/resource@{triggerBody()?['data']?['essentials']?['alertTargetIDs']?[0]}|@{last(variables('affectedResource'))}>",
+              "text": "*Resource:* \n <@{concat('https://portal.azure.com/#@', variables('tenantID'))}/resource/subscriptions/@{variables('affectedResource')[2]}/resourceGroups/@{variables('resourceGroup')}/providers/Microsoft.App/containerApps/@{variables('alarmContext')['condition']['allOf'][0]['dimensions'][2]['value']}/containerapp|@{variables('alarmContext')['condition']['allOf'][0]['dimensions'][2]['value']}>",
               "type": "mrkdwn"
             },
             {
