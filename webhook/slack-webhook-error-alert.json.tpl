@@ -22,29 +22,16 @@
           "type": "section"
         },
         {
-          "fields": [
-            {
-              "text": "*Resource:* \n <@{concat('https://portal.azure.com/#@', variables('tenantID'))}/resource/subscriptions/@{variables('affectedResource')[2]}/resourceGroups/@{variables('resourceGroup')}/providers/Microsoft.App/containerApps/@{variables('alarmContext')['condition']['allOf'][0]['dimensions'][0]['value']}/containerapp|@{variables('alarmContext')['condition']['allOf'][0]['dimensions'][0]['value']}>",
-              "type": "mrkdwn"
-            },
-            {
-              "text": "*Log level:* \n @{variables('alarmContext')['condition']['allOf'][0]['dimensions'][5]['value']}",
-              "type": "mrkdwn"
-            }
-          ],
-          "type": "section"
-        },
-        {
           "text": {
-            "text": "*@{variables('alarmContext')['condition']['allOf'][0]['dimensions'][3]['value']}* \n @{variables('alarmContext')['condition']['allOf'][0]['dimensions'][1]['value']}",
+            "text": "*<@{variables('alarmContext')['condition']['allOf'][0]['dimensions'][0]['value']}|@{variables('alarmContext')['condition']['allOf'][0]['dimensions'][3]['value']}>* \n @{variables('alarmContext')['condition']['allOf'][0]['dimensions'][1]['value']}",
             "type": "mrkdwn"
           },
           "type": "section"
         },
         {
           "text": {
-            "text": "*Request:* \n @{variables('alarmContext')['condition']['allOf'][0]['dimensions'][6]['value']}",
-            "type": "mrkdwn"
+            "type": "mrkdwn",
+            "text": "*Request:* @{variables('alarmContext')['condition']['allOf'][0]['dimensions'][6]['value']}"
           },
           "type": "section"
         },
@@ -57,6 +44,10 @@
             },
             {
               "text": "*Status code:* @{variables('alarmContext')['condition']['allOf'][0]['dimensions'][4]['value']}",
+              "type": "mrkdwn"
+            },
+            {
+              "text": "*Log level:* @{variables('alarmContext')['condition']['allOf'][0]['dimensions'][5]['value']}",
               "type": "mrkdwn"
             }
           ]
