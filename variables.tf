@@ -57,12 +57,15 @@ variable "resource_group_target_webhooks" {
   DOC
   type = map(
     object({
-      channel_id       = string
-      webhook_url      = string
-      message_tag      = optional(string, "<!here>")
-      sev1_channel_id  = optional(string, "")
-      sev1_webhook_url = optional(string, "")
-      sev1_message_tag = optional(string, "<!channel>")
+      channel_id        = string
+      webhook_url       = string
+      message_tag       = optional(string, "<!here>")
+      error_channel_id  = optional(string, "")
+      error_webhook_url = optional(string, "")
+      error_message_tag = optional(string, "<!here>")
+      sev1_channel_id   = optional(string, "")
+      sev1_webhook_url  = optional(string, "")
+      sev1_message_tag  = optional(string, "<!channel>")
     })
   )
   default = {}
