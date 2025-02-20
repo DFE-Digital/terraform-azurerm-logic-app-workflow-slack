@@ -24,6 +24,9 @@ locals {
       "webhook_url" : webhook.webhook_url,
       "channel_id" : webhook.channel_id,
       "message_tag" : webhook.message_tag,
+      "error_webhook_url" : webhook.error_webhook_url != "" ? webhook.error_webhook_url : webhook.webhook_url,
+      "error_channel_id" : webhook.error_channel_id != "" ? webhook.error_channel_id : webhook.channel_id,
+      "error_message_tag" : webhook.error_message_tag != "" ? webhook.error_message_tag : webhook.message_tag,
       "sev1_webhook_url" : webhook.sev1_webhook_url != "" ? webhook.sev1_webhook_url : webhook.webhook_url,
       "sev1_channel_id" : webhook.sev1_channel_id != "" ? webhook.sev1_channel_id : webhook.channel_id,
       "sev1_message_tag" : webhook.sev1_message_tag != "" ? webhook.sev1_message_tag : webhook.message_tag,
@@ -112,25 +115,6 @@ locals {
     }
   )
 
-  alert_condition = templatefile(
-    "${path.module}/templates/actions/condition.json.tpl",
-    {
-      name      = "searchQuery.contains.traces"
-      run_after = "{}"
-      expressions = jsonencode([
-        {
-          "startsWith" = [
-            "@variables('alarmContext')['condition']['allOf'][0]['searchQuery']",
-            "traces"
-          ]
-        }
-      ])
-      action_if_true  = local.error_webhook
-      action_if_false = local.exception_webhook
-      description     = "Check if log alert context is for 'traces'"
-    }
-  )
-
   signaltype_switch = templatefile(
     "${path.module}/templates/actions/switch.json.tpl",
     {
@@ -146,7 +130,7 @@ locals {
           "action" : local.activity_webhook
         }
         "Log" : { # Alert for Log Query alarms
-          "action" : local.alert_condition
+          "action" : local.error_webhook
         }
       }
       default_action = jsonencode([])
@@ -191,33 +175,14 @@ locals {
     }
   )
 
-  exception_webhook = templatefile(
-    "${path.module}/templates/actions/http.json.tpl",
-    {
-      body = templatefile(
-        "${path.module}/webhook/slack-webhook-exception-alert.json.tpl",
-        {
-          channel     = "@if(or(equals(variables('alarmSeverity'), 'Sev1'), equals(variables('alarmSeverity'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_channel_id'], variables('webhookMap')[variables('resourceGroup')]['channel_id'])"
-          message_tag = "@if(or(equals(variables('alarmSeverity'), 'Sev1'), equals(variables('alarmSeverity'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_message_tag'], variables('webhookMap')[variables('resourceGroup')]['message_tag'])"
-        }
-      )
-      headers = jsonencode({
-        "Content-Type" : "application/json"
-      })
-      description = "Send an Exception alert to Slack Channel"
-      method      = "POST"
-      uri         = "@if(or(equals(variables('alarmSeverity'), 'Sev1'), equals(variables('alarmSeverity'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_webhook_url'], variables('webhookMap')[variables('resourceGroup')]['webhook_url'])"
-    }
-  )
-
   error_webhook = templatefile(
     "${path.module}/templates/actions/http.json.tpl",
     {
       body = templatefile(
         "${path.module}/webhook/slack-webhook-error-alert.json.tpl",
         {
-          channel     = "@if(or(equals(variables('alarmSeverity'), 'Sev1'), equals(variables('alarmSeverity'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_channel_id'], variables('webhookMap')[variables('resourceGroup')]['channel_id'])"
-          message_tag = "@if(or(equals(variables('alarmSeverity'), 'Sev1'), equals(variables('alarmSeverity'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_message_tag'], variables('webhookMap')[variables('resourceGroup')]['message_tag'])"
+          channel     = "@variables('webhookMap')[variables('resourceGroup')]['error_channel_id']"
+          message_tag = "@variables('webhookMap')[variables('resourceGroup')]['error_message_tag']"
         }
       )
       headers = jsonencode({
@@ -225,7 +190,7 @@ locals {
       })
       description = "Send an Error alert to Slack Channel"
       method      = "POST"
-      uri         = "@if(or(equals(variables('alarmSeverity'), 'Sev1'), equals(variables('alarmSeverity'), 'Sev0')), variables('webhookMap')[variables('resourceGroup')]['sev1_webhook_url'], variables('webhookMap')[variables('resourceGroup')]['webhook_url'])"
+      uri         = "@variables('webhookMap')[variables('resourceGroup')]['error_webhook_url']"
     }
   )
 
