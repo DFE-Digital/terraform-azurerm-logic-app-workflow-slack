@@ -11,7 +11,7 @@ Example module usage:
 
 ```hcl
 module "azurerm_logic_app_workflow" {
-  source              = "github.com/DFE-Digital/terraform-azurerm-logic-app-workflow-slack?ref=v1.0.0"
+  source              = "github.com/DFE-Digital/terraform-azurerm-logic-app-workflow-slack?ref=v1.4.0"
   environment         = "my-env"
   project_name        = "my-proj"
   azure_location      = "uksouth"
